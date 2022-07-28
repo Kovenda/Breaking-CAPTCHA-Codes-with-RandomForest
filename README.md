@@ -16,46 +16,7 @@ efficiency of the neural networks to correctly identify the Captcha
 characters. The label variable is the letter or number from the image of
 the separated Captcha characters.
 
-
-
-``` {.python}
-!pip install opencv
-conda install -c conda-forge/label/gcc7 opencv
-conda install -c menpo opencv
-
-# Common imports
-import numpy as np
-import os
-
-
-# to make this notebook's output stable across runs
-np.random.seed(42)
-
-# To plot pretty figures
-%matplotlib inline
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-mpl.rc('axes', labelsize=14)
-mpl.rc('xtick', labelsize=12)
-mpl.rc('ytick', labelsize=12)
-```
-
-``` {.python}
- import os
-```
-
-``` {.python}
-os.getcwd()
-```
-
-``` {.python}
-#image_file_Path ="/home/LC/chakth01/Neural networks/targetdir/captcha_images/"
-image_file_Path ="/home/LC/mbuako01/DS 420 Project 2/imageFolder/captcha_images/"
-```
-
-``` {.python}
-image_file_Path
-```
+## read in images
 
 ``` {.python}
 def read_image(image_file_path):
@@ -65,46 +26,23 @@ def read_image(image_file_path):
     rgb_img = cv2.merge([r,g,b])     # switch it to rgb
     
     return rgb_img 
-```
-
-``` {.python}
-import cv2
-import imutils
-import numpy as np
-import os
-from imutils import paths
-import pandas as pd
-```
-
-``` {.python}
 images = []
 labels = []
-```
 
-``` {.python}
 for image_file_path in imutils.paths.list_images(image_file_Path):
     image_file = read_image(image_file_path)
     label = image_file_path.split('/')[7]
     images.append(image_file)
     labels.append(label)
-    
-```
-
-``` {.python}
-newLabels = []
-
+   
 for label in labels:
     labelHere = label.split('.')[0]
     newLabels.append(labelHere)
-```
-
-``` {.python}
+    
 images = np.array(images)
 #images4Plot = np.array(images, dtype="float") / 255.0
 labels = np.array(newLabels)
 ```
-
-
 A dataset of 9,955 of unique CAPTCHA images each with its label as the
 filename was used for this research. However, machine learning
 classification requires a one-to-many relationship between a label and
@@ -120,19 +58,10 @@ plt.axis("off")
 
 
 plt.show()
-
-
-
 ```
 ![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/d0de6d4167aae20e07f8c9576a487b463410295a.png?raw=true)
 
-``` {.python}
-import os
-import os.path
-import cv2
-import glob
-import imutils
-```
+## Padding and Thresholding: Coverting images to Black and White (non-gray scale)
 
 ``` {.python}
 def pureBlackWhiteConversionThreshold(image):
@@ -142,35 +71,27 @@ def pureBlackWhiteConversionThreshold(image):
     # threshold the image (convert it to pure black and white)
     imagethresholded = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]    
     return imagethresholded 
-```
-
-
-``` {.python}
+    
 def pureBlackWhiteConversionOGImage(image):
     # Add some extra padding around the image
     imagePadded = cv2.copyMakeBorder(image, 8, 8, 8, 8, cv2.BORDER_REPLICATE)
     gray = cv2.cvtColor(imagePadded, cv2.COLOR_RGB2GRAY)
-       
-    return gray 
-```
-
-``` {.python}
+    
 padded_ThreshImage300 = pureBlackWhiteConversionThreshold(images[300])
-```
 
-``` {.python}
 some_digit = padded_ThreshImage300
-
 plt.imshow(some_digit, cmap = mpl.cm.binary,
            interpolation="nearest")
 plt.axis("off")
-
-
 plt.show()
 ```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/8995982a1771d8fa3139a964a1f0de4b7efcd475.png?raw=true)
 
+## Seperate Characters into individual images 
 
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/8995982a1771d8fa3139a964a1f0de4b7efcd475.png)
+> To deal with the uniqueness problem of the dataset, the solution was to separate the CAPTCHA images into the individual 4 characters that make up the CHAPTCHA image. This was to make each character into its own image. The resulting dataset has 39,754 images with one character per image. The new dataset satisfies the one-to-many relationship between the images and the following 32 characters labels {\'2\', \'3\', \'4\',\'5\', \'6\', \'7\', \'8\', \'9\', \'A\', \'B\', \'C\', \'D\', \'E\',
+\'F\', \'G\', \'H\', \'J\', \'K\', \'L\', \'M\', \'N\', \'P\', \'Q\',\'R\', \'S\', \'T\', \'U\', \'V\', \'W\', \'X\', \'Y\', \'Z\'}
+
 
 ``` {.python}
 def regionsOfLetters(image):
@@ -211,25 +132,10 @@ def regionsOfLetters(image):
     letter_image_regions = sorted(letter_image_regions, key=lambda x: x[0])
     
     return letter_image_regions 
-```
-
-``` {.python}
+    
 letter_image_regions = regionsOfLetters(padded_ThreshImage300)
 letter_image_regions
-```
 
-
-To deal with the uniqueness problem of the dataset, the solution was to
-separate the CAPTCHA images into the individual 4 characters that make
-up the CHAPTCHA image. This was to make each character into its own
-image. The resulting dataset has 39,754 images with one character per
-image. The new dataset satisfies the one-to-many relationship between
-the images and the following 32 characters labels {\'2\', \'3\', \'4\',
-\'5\', \'6\', \'7\', \'8\', \'9\', \'A\', \'B\', \'C\', \'D\', \'E\',
-\'F\', \'G\', \'H\', \'J\', \'K\', \'L\', \'M\', \'N\', \'P\', \'Q\',
-\'R\', \'S\', \'T\', \'U\', \'V\', \'W\', \'X\', \'Y\', \'Z\'}
-
-``` {.python}
 def extractLetters(letter_image_regions, image):
     # Save out each letter as a single image
     letter_images =[]
@@ -243,43 +149,19 @@ def extractLetters(letter_image_regions, image):
         letter_images.append(letter_image)
     return letter_images 
     
-```
-
-``` {.python}
 grayScaleImage = pureBlackWhiteConversionOGImage(images[300])
 letter_image_List = extractLetters(letter_image_regions,grayScaleImage)
-```
 
-``` {.python}
 checkImage = letter_image_List[3]
-```
 
-``` {.python}
 some_digit = checkImage
 #Some_digit_image = some_digit.reshape(24, 72, 3)
 plt.imshow(some_digit, cmap = mpl.cm.binary,
            interpolation="nearest")
 plt.axis("off")
-
-
 plt.show()
 ```
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/2492e78e7724e2c4241d4148b15603de796bd78a.png)
-
-``` {.python}
-len(labels)
-```
-
-
-``` {.python}
-len(images)
-```
-
-``` {.python}
-images.shape
-```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/2492e78e7724e2c4241d4148b15603de796bd78a.png?raw=true)
 
 
 ``` {.python}
