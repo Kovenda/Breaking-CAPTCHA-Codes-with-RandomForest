@@ -126,7 +126,7 @@ plt.show()
 
 
 ```
-![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/tree/main/images-and-plots/blob/main/d0de6d4167aae20e07f8c9576a487b463410295a.png?raw=true)
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/images-and-plots/blob/main/d0de6d4167aae20e07f8c9576a487b463410295a.png?raw=true)
 
 ``` {.python}
 import os
