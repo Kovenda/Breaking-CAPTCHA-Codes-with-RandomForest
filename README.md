@@ -93,14 +93,6 @@ for image_file_path in imutils.paths.list_images(image_file_Path):
 ```
 
 ``` {.python}
-#images
-```
-
-``` {.python}
-#labels
-```
-
-``` {.python}
 newLabels = []
 
 for label in labels:
@@ -109,34 +101,17 @@ for label in labels:
 ```
 
 ``` {.python}
-#newLabels
-```
-
-``` {.python}
 images = np.array(images)
 #images4Plot = np.array(images, dtype="float") / 255.0
 labels = np.array(newLabels)
 ```
 
-``` {.python}
-print(labels)
-```
-
-
-``` {.python}
-#print(images)
-```
 
 A dataset of 9,955 of unique CAPTCHA images each with its label as the
 filename was used for this research. However, machine learning
 classification requires a one-to-many relationship between a label and
 in this context the CAPTCHA images. Therefore, uniqueness of the CAPTCHA
 images is problematic for a machine learning process.
-
-``` {.python}
-images.shape
-```
-
 
 ``` {.python}
 some_digit = images[300]
@@ -147,10 +122,8 @@ plt.axis("off")
 
 
 plt.show()
-```
 
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/d0de6d4167aae20e07f8c9576a487b463410295a.png)
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/tree/main/images-and-plots/blob/main/d0de6d4167aae20e07f8c9576a487b463410295a.png?raw=true)
 
 ``` {.python}
 labels[300]
