@@ -360,11 +360,11 @@ plt.show()
 The model's performance on the test is not that much different from the training set which shows that the model didn't overfit on the training set. All the performance metrics are above 97% and the precision vs recall and ROC curves confirm the performance of the model. The confusion matrix shows that the model is confusing some Ms for Ws and vice-versa.
 
 ![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/5935341817aec8ba2aa6411e7cee056d99ea662d.png?raw=true)
-
+### Actual M's predicted as M's
 ![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/c44d061bc67695fa2de68f01fbfb82dd4c515fb0.png?raw=true)
-
+### Actual M's predicted as W's
 ![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/aa188acd9d1d644310939300bd1cd6a7080800ed.png?raw=true)
-
+### Actual W's predicted as W's
 ![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/4e9644350b60a39f90935e066d72bb0f377223fc.png?raw=true)
-
+### Actual W's predicted as M's
 ![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/c3e53611170b82e1d438cf9942a35ccae58a116b.png?raw=true)
