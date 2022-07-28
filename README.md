@@ -1,5 +1,7 @@
 # randomForest for Breaking CAPTCHA Security Codes
 
+# Image Processing
+
 The Captcha image consists of four characters that are either a string
 of letters or a combination of letters with numbers. In some of the
 combinations, the captcha characters contain all letters but they are
@@ -197,34 +199,19 @@ plot_digits(example_images, images_per_row=5)
 ```
 ![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/deb47268075c5456f794f88455f6f8a4307c4491.png?raw=true)
 
-
-## 4. Prepare Data for RandomForest Model
+# Model Building
+## Prepare Data for RandomForest Model
 
 ``` {.python}
 images3DTo2D = images.reshape(39754, 28 * 28)
-images3DTo2D.shape
-```
-
-
-``` {.python}
 X, y = images3DTo2D, labels
-X.shape
-```
 
-
-``` {.python}
-np.unique(y)
 ```
 
 
 
-
-## 5. Train test split
-
-The image data was split into training and test set data, with the
-training set having 80% of the data and the remaining 20% was kept for
-the evaluation of model performance on the test set. The data was then
-fit to the random forest model.
+## Train test split
+> The image data was split into training and test set data, with the training set having 80% of the data and the remaining 20% was kept for the evaluation of model performance on the test set. The data was then fit to the random forest model.
 
 ``` {.python}
 from sklearn.model_selection import train_test_split
@@ -233,114 +220,39 @@ from sklearn.model_selection import train_test_split
     X, y, test_size=0.2, random_state=11
 )
 ```
-
+## Fit Model
 ``` {.python}
 from sklearn.ensemble import RandomForestClassifier
 forest_clf = RandomForestClassifier(n_estimators=10, random_state=42)
-```
 
-``` {.python}
 forest_clf.fit(X_train, y_train)
-```
 
-
-### Random Forest training set Performance
-
-``` {.python}
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import cross_val_score
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train.astype(np.float64))
 ```
 
-``` {.python}
-from sklearn.model_selection import cross_val_predict
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
 
-```
-
-``` {.python}
-def plot_confusion_matrix(matrix):
-    """If you prefer color and a colorbar"""
-    fig = plt.figure(figsize=(5,5))
-    ax = fig.add_subplot(111)
-    cax = ax.matshow(matrix)
-    fig.colorbar(cax)
-```
-
-``` {.python}
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.multiclass import OneVsRestClassifier
-from sklearn.metrics import precision_recall_curve, roc_curve
-from sklearn.preprocessing import label_binarize
-
-import matplotlib.pyplot as plt
-#%matplotlib inline
-
-
-# Binarize the output
-y_trainBinarize = label_binarize(y_train, classes=np.unique(y))
-n_classes = y_trainBinarize.shape[1]
-n_classes
-
-clf = OneVsRestClassifier(forest_clf)
-clf.fit(X_train, y_trainBinarize)
-
-y_score = clf.predict_proba(X_train)
-```
+### Training set Performance
 
 ``` {.python}
 y_train_pred = cross_val_predict(clf, X_train_scaled, y_train, cv=3)
 conf_mx = confusion_matrix(y_train, y_train_pred)
-conf_mx
-```
 
-
-``` {.python}
 plt.matshow(conf_mx, cmap=plt.cm.gray)
 
 plt.show()
 ```
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/5365f1f1c87b6a653510fb09a5bb997364b04f31.png)
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/5365f1f1c87b6a653510fb09a5bb997364b04f31.png?raw=true)
 
 ``` {.python}
 row_sums = conf_mx.sum(axis=1, keepdims=True)
 norm_conf_mx = conf_mx / row_sums
-```
-
-``` {.python}
 np.fill_diagonal(norm_conf_mx, 0)
 plt.matshow(norm_conf_mx, cmap=plt.cm.gray)
 
 plt.show()
 ```
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/778e962171f372a179601b5905b0c84a4ebe1885.png)
-
-``` {.python}
-accuracy_score(y_train, y_train_pred)
-```
-
-
-``` {.python}
-precision_score(y_train, y_train_pred, average='micro')
-```
-
-
-``` {.python}
-recall_score(y_train, y_train_pred, average='micro')
-```
-
-
-``` {.python}
-f1_score(y_train, y_train_pred, average='micro')
-```
-
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/778e962171f372a179601b5905b0c84a4ebe1885.png?raw=true)
 
 ``` {.python}
 # precision recall curve
@@ -357,9 +269,7 @@ plt.ylabel("precision")
 plt.title("precision vs. recall curve")
 plt.show()
 ```
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/6216f1e130aafc561c1cb81b4dc53af4c6351c18.png)
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/6216f1e130aafc561c1cb81b4dc53af4c6351c18.png?raw=true)
 
 ### Training set ROC curves
 
@@ -379,15 +289,9 @@ plt.ylabel("true positive rate")
 plt.title("ROC curve")
 plt.show()
 ```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/c4f0309f843c8a99a6d4b59884e7874273bc8c20.png?raw=true)
 
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/c4f0309f843c8a99a6d4b59884e7874273bc8c20.png)
-
-The random forest model did very well predicting the individual
-characters from the CAPTCHA images with an accuracy score, precision
-score, recall score and f1 score, all of 97.956%. The precision vs
-recall and ROC curves shows that the model is predicting most characters
-correctly.
+The random forest model did very well predicting the individual characters from the CAPTCHA images with an accuracy score, precision score, recall score and f1 score, all of 97.956%. The precision vs recall and ROC curves shows that the model is predicting most characters correctly.
 
 ### Random Forest test set Performance
 
@@ -395,58 +299,24 @@ correctly.
 X_test_scaled = scaler.fit_transform(X_test.astype(np.float64))
 y_test_pred = cross_val_predict(clf, X_test_scaled, y_test, cv=3)
 conf_mx = confusion_matrix(y_test, y_test_pred)
-conf_mx
-```
-
-
-``` {.python}
 plt.matshow(conf_mx, cmap=plt.cm.gray)
 
 plt.show()
+
 ```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/02ed9d25de4863f789686ec3e9ab332e769bdbc3.png?raw=true)
 
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/02ed9d25de4863f789686ec3e9ab332e769bdbc3.png)
 
 ``` {.python}
 row_sums = conf_mx.sum(axis=1, keepdims=True)
 norm_conf_mx = conf_mx / row_sums
-```
-
-``` {.python}
 np.fill_diagonal(norm_conf_mx, 0)
 plt.matshow(norm_conf_mx, cmap=plt.cm.gray)
 
 plt.show()
 ```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/ed5faee1a695e195ac14ddef46077aef664a31bc.png?raw=true)
 
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/ed5faee1a695e195ac14ddef46077aef664a31bc.png)
-
-``` {.python}
-accuracy_score(y_test, y_test_pred)
-```
-
-
-``` {.python}
-precision_score(y_test, y_test_pred, average='micro')
-```
-
-
-``` {.python}
-recall_score(y_test, y_test_pred, average='micro')
-```
-
-
-``` {.python}
-f1_score(y_test, y_test_pred, average='micro')
-```
-
-
-``` {.python}
-y_testBinarize = label_binarize(y_test, classes=np.unique(y))
-y_scoretest = clf.predict_proba(X_test)
-```
 
 ``` {.python}
 # precision recall curve
@@ -463,10 +333,9 @@ plt.ylabel("precision")
 plt.title("precision vs. recall curve")
 plt.show()
 ```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/1826b54ce935dbed15f5aa627b9ea4279e96d1b5.png?raw=true)
 
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/1826b54ce935dbed15f5aa627b9ea4279e96d1b5.png)
-
+### ROC Curves
 ``` {.python}
 # roc curve
 fpr = dict()
@@ -484,90 +353,18 @@ plt.title("ROC curve")
 plt.show()
 ```
 
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/3abb83cff29d6b08e08d7c2d2f80828f72bbf3ea.png)
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/3abb83cff29d6b08e08d7c2d2f80828f72bbf3ea.png?raw=true)
 
-The model's performance on the test is not that much different from the
-training set which shows that the model didn't overfit on the training
-set. All the performance metrics are above 97% and the precision vs
-recall and ROC curves confirm the performance of the model. The
-confusion matrix shows that the model is confusing some Ms for Ws and
-vice-versa.
+### Prediction examples
 
-``` {.python}
-uniqueCharacters = np.unique(y)
-uniqueCharacters
-```
+The model's performance on the test is not that much different from the training set which shows that the model didn't overfit on the training set. All the performance metrics are above 97% and the precision vs recall and ROC curves confirm the performance of the model. The confusion matrix shows that the model is confusing some Ms for Ws and vice-versa.
 
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/5935341817aec8ba2aa6411e7cee056d99ea662d.png?raw=true)
 
-``` {.python}
-W = uniqueCharacters[28]
-```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/c44d061bc67695fa2de68f01fbfb82dd4c515fb0.png?raw=true)
 
-``` {.python}
-M = uniqueCharacters[19]
-```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/aa188acd9d1d644310939300bd1cd6a7080800ed.png?raw=true)
 
-``` {.python}
-indexM, = np.where(labels == M)
-indexM
-```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/4e9644350b60a39f90935e066d72bb0f377223fc.png?raw=true)
 
-
-``` {.python}
-indexW, = np.where(labels == W)
-indexW
-```
-
-
-``` {.python}
-plot_digit(images[indexM[789]])
-```
-
-``` {.python}
-plot_digit(images[indexW[789]])
-```
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/5935341817aec8ba2aa6411e7cee056d99ea662d.png)
-
-``` {.python}
-cl_a = 'M'
-cl_b = 'W'
-
-X_aa = X_train[(y_train == cl_a) & (y_train_pred == cl_a)]
-X_ab = X_train[(y_train == cl_a) & (y_train_pred == cl_b)]
-
-```
-
-``` {.python}
- plot_digits(X_aa[:24], images_per_row=4)
-```
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/c44d061bc67695fa2de68f01fbfb82dd4c515fb0.png)
-
-``` {.python}
-plot_digits(X_ab, images_per_row=7)
-```
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/aa188acd9d1d644310939300bd1cd6a7080800ed.png)
-
-``` {.python}
-X_bb = X_train[(y_train == cl_b) & (y_train_pred == cl_b)]
-X_ba = X_train[(y_train == cl_b) & (y_train_pred == cl_a)]
-```
-
-``` {.python}
-plot_digits(X_bb[:25], images_per_row=5)
-```
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/4e9644350b60a39f90935e066d72bb0f377223fc.png)
-
-``` {.python}
-plot_digits(X_ba, images_per_row=5)
-```
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/c3e53611170b82e1d438cf9942a35ccae58a116b.png)
-
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/c3e53611170b82e1d438cf9942a35ccae58a116b.png?raw=true)
