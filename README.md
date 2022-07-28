@@ -123,12 +123,10 @@ plt.axis("off")
 
 plt.show()
 
-![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/tree/main/images-and-plots/blob/main/d0de6d4167aae20e07f8c9576a487b463410295a.png?raw=true)
 
-``` {.python}
-labels[300]
+
 ```
-
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/tree/main/images-and-plots/blob/main/d0de6d4167aae20e07f8c9576a487b463410295a.png?raw=true)
 
 ``` {.python}
 import os
