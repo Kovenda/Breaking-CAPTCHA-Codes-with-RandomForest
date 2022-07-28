@@ -163,103 +163,8 @@ plt.show()
 ```
 ![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/2492e78e7724e2c4241d4148b15603de796bd78a.png?raw=true)
 
-
+# New Image Dataset
 ``` {.python}
-def expand2square(image):
-    desired_size = 28
-    im = image
-    old_size = im.shape[:2] # old_size is in (height, width) format
-
-    ratio = float(desired_size)/max(old_size)
-    new_size = tuple([int(x*ratio) for x in old_size])
-
-    # new_size should be in (width, height) format
-
-    im = cv2.resize(im, (new_size[1], new_size[0]))
-
-    delta_w = desired_size - new_size[1]
-    delta_h = desired_size - new_size[0]
-    top, bottom = delta_h//2, delta_h-(delta_h//2)
-    left, right = delta_w//2, delta_w-(delta_w//2)
-
-    color = [255, 255, 255]
-    new_im = cv2.copyMakeBorder(im, top, bottom, left, right, cv2.BORDER_CONSTANT,
-        value=color)
-    return new_im
-```
-
-``` {.python}
-letterImages = []
-letterImageLabels = []
-
-
-# loop over the unseparated image list
-for label, image in zip(labels, images):
-    
-    padded_ThreshImage300 = pureBlackWhiteConversionThreshold(image)
-    letter_image_regions = regionsOfLetters(padded_ThreshImage300)
-    grayScaleImage = pureBlackWhiteConversionOGImage(image)
-    letter_image_List = extractLetters(letter_image_regions,grayScaleImage)
-     #image_reshape = letter_bounding_box.reshape(L0, L1)
-    for letter_bounding_box, letter_text in zip(letter_image_List, label): 
-        L0=letter_bounding_box.shape[0]
-        L1=letter_bounding_box.shape[1]
-       
-        imageResize = expand2square(letter_bounding_box)
-        letterImages.append(imageResize)
-        letterImageLabels.append(letter_text)
-    
-        
-        
-```
-
-``` {.python}
-len(letterImageLabels)
-```
-
-``` {.python}
-displayDigit = letterImages[609]
-
-plt.imshow(displayDigit, cmap = mpl.cm.binary,
-           interpolation="nearest")
-plt.axis("off")
-
-
-plt.show()
-```
-![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/ee0447a3ff48b1fb5e393400494480c4aaf221bf.png?raw=true)
-
-
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/ee0447a3ff48b1fb5e393400494480c4aaf221bf.png)
-
-``` {.python}
-letterImages[609].shape
-```
-
-``` {.python}
-images = np.array(letterImages)
-labels = np.array(letterImageLabels)
-```
-
-``` {.python}
- images.shape
-```
-
-
-``` {.python}
-def plot_digit(image):
-    some_digit = image
-    plt.imshow(some_digit, cmap = mpl.cm.binary,
-               interpolation="nearest")
-    plt.axis("off")
-
-
-    plt.show()
-```
-
-``` {.python}
-# EXTRA
 def plot_digits(instances, images_per_row=10, **options):
     size = 28
     images_per_row = min(len(instances), images_per_row)
@@ -274,15 +179,9 @@ def plot_digits(instances, images_per_row=10, **options):
     image = np.concatenate(row_images, axis=0)
     plt.imshow(image, cmap = mpl.cm.binary, **options)
     plt.axis("off")
-```
-
-``` {.python}
+    
 index, = np.where(labels == 'F')
-index
-```
 
-
-``` {.python}
 plt.figure(figsize=(15, 15))
 example_images = np.r_[images[[14,39,51,39702,39752]], 
                        images[[7,56,61,39703,39714]],
@@ -294,10 +193,10 @@ example_images
 plot_digits(example_images, images_per_row=5)
 #save_fig("more_digits_plot")
 #plt.show()
+
 ```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/deb47268075c5456f794f88455f6f8a4307c4491.png?raw=true)
 
-
-![](vertopal_506752d0a93e4361b07a09574f75cb2c/deb47268075c5456f794f88455f6f8a4307c4491.png)
 
 ## 4. Prepare Data for RandomForest Model
 
