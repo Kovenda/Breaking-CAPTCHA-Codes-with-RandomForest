@@ -227,6 +227,8 @@ plt.axis("off")
 
 plt.show()
 ```
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/ee0447a3ff48b1fb5e393400494480c4aaf221bf.png?raw=true)
+
 
 
 ![](vertopal_506752d0a93e4361b07a09574f75cb2c/ee0447a3ff48b1fb5e393400494480c4aaf221bf.png)
