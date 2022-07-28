@@ -1,6 +1,4 @@
-
-
-
+# randomForest for Breaking CAPTCHA Security Codes
 
 The Captcha image consists of four characters that are either a string
 of letters or a combination of letters with numbers. In some of the
@@ -126,7 +124,7 @@ plt.show()
 
 
 ```
-![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/images-and-plots/blob/main/d0de6d4167aae20e07f8c9576a487b463410295a.png?raw=true)
+![alt text](https://github.com/Kovenda/randomForest-Breaking-CAPTCHA-Security-Codes/blob/main/images-and-plots/d0de6d4167aae20e07f8c9576a487b463410295a.png?raw=true)
 
 ``` {.python}
 import os
