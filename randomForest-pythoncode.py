@@ -1,3 +1,17 @@
+# Imports
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.metrics import precision_recall_curve, roc_curve
+from sklearn.preprocessing import label_binarize
+import matplotlib.pyplot as plt
 
 ## 1. Prepare Data for RandomForest Model
 
@@ -12,28 +26,17 @@ np.unique(y)
 ## 2. Train test split
 # The image data was split into training and test set data, with the training set having 80% of the data and the remaining 20% was kept for the evaluation of model performance on the test set. The data was then fit to the random forest model.
 
-
-from sklearn.model_selection import train_test_split
-
 (X_train, X_test, y_train, y_test) = train_test_split(
     X, y, test_size=0.2, random_state=11
 )
 
-from sklearn.ensemble import RandomForestClassifier
 forest_clf = RandomForestClassifier(n_estimators=10, random_state=42)
 
 forest_clf.fit(X_train, y_train)
 
 ### Random Forest training set Performance
-
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import cross_val_score
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train.astype(np.float64))
-
-from sklearn.model_selection import cross_val_predict
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
 
 def plot_confusion_matrix(matrix):
     #If you prefer color and a colorbar
@@ -41,16 +44,6 @@ def plot_confusion_matrix(matrix):
     ax = fig.add_subplot(111)
     cax = ax.matshow(matrix)
     fig.colorbar(cax)
-
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.multiclass import OneVsRestClassifier
-from sklearn.metrics import precision_recall_curve, roc_curve
-from sklearn.preprocessing import label_binarize
-
-import matplotlib.pyplot as plt
-
-
 
 # Binarize the output
 y_trainBinarize = label_binarize(y_train, classes=np.unique(y))
